@@ -4,17 +4,13 @@ import { authService } from 'fbase';
 
 function App() {
   const [init, setInit] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userObj, setUserObj] = useState(null); //user 저장해두기
 
   useEffect(() => {
     //onAuthStateChanged는 user의 로그인 상태 변화를 체크함 + firebase가 실행될 때도 / (user)을 callback
     authService.onAuthStateChanged(user => {
       if (user) {
-        setIsLoggedIn(true);
         setUserObj(user);
-      } else {
-        setIsLoggedIn(false);
       }
       setInit(true);
     });
@@ -22,7 +18,7 @@ function App() {
   return (
     <>
       {init ? (
-        <AppRouter isLoggedIn={isLoggedIn} userObj={userObj} />
+        <AppRouter isLoggedIn={Boolean(userObj)} userObj={userObj} />
       ) : (
         'Initializing...'
       )}

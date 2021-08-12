@@ -2,6 +2,7 @@ import firebase from 'firebase/app';
 //firebase에서 사용하는거 import하기
 import 'firebase/auth';
 import 'firebase/firestore';
+import 'firebase/storage';
 
 var firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -17,3 +18,4 @@ firebase.initializeApp(firebaseConfig);
 export const firebaseInstance = firebase;
 export const authService = firebase.auth();
 export const dbService = firebase.firestore();
+export const storageService = firebase.storage();

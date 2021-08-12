@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
-import { dbService } from 'fbase';
+import { dbService, storageService } from 'fbase';
 
 const Cweet = ({ cweetObj, isOwner }) => {
   const [editing, setEditing] = useState(false); //editing 모드
   const [newCweet, setNewCweet] = useState(cweetObj.text); //기존 text, input에 입력된 text값 업데이트
   console.log(isOwner);
-
-  //삭제
   const onDeleteClick = async () => {
     const ok = window.confirm('Are you sure you want to delete this cweet?');
     if (ok) {
-      await dbService.doc(`cweets/${cweetObj.id}`).delete();
+      await dbService.doc(`cweets/${cweetObj.id}`).delete(); //document 삭제
+      await storageService.refFromURL(cweetObj.attachmentUrl).delete(); //사진 삭제 attachmentUrl은 cweetObj에 있다
     }
   };
 
@@ -50,7 +49,11 @@ const Cweet = ({ cweetObj, isOwner }) => {
       ) : (
         <>
           <h4>{cweetObj.text}</h4>
+          {cweetObj.attachmentUrl && (
+            <img src={cweetObj.attachmentUrl} width="50px" height="50px" />
+          )}
           {/* owner만 접근가능 */}
+          <span>{isOwner}</span>
           {isOwner && (
             <>
               <button onClick={onDeleteClick}>Delete Cweet</button>
