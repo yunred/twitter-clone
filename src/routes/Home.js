@@ -5,13 +5,13 @@ import Cweet from 'components/Cweet';
 const Home = ({ userObj }) => {
   const [cweet, setCweet] = useState(''); //현재 트윗창
   const [cweets, setCweets] = useState([]); //모든 트윗
-  const [attachment, setAttachment] = useState('');
+  const [attachment, setAttachment] = useState(''); //사진파일 주소
 
   //mount될 때 실행
   useEffect(() => {
     dbService.collection('cweets').onSnapshot(snapshot => {
       const cweetArray = snapshot.docs.map(doc => ({
-        id: doc.id, //doc들은 id를 가지고있다??
+        id: doc.id, //doc들은 id를 가지고있다
         ...doc.data(),
       }));
       setCweets(cweetArray);
@@ -27,7 +27,6 @@ const Home = ({ userObj }) => {
         .ref()
         .child(`${userObj.uid}/${uuidv4()}`);
       const response = await attachmentRef.putString(attachment, 'data_url');
-      attachmentUrl = await response.ref.getDownloadURL();
     }
     const cweetObj = {
       text: cweet,
@@ -53,7 +52,7 @@ const Home = ({ userObj }) => {
     //fileReader API : 파일 이름을 읽음
     const reader = new FileReader();
     reader.onloadend = finishedEvent => {
-      //reader에 event listener추가. 다읽으면 finishedEvent를 가지게 됨
+      //reader에 eventlistener추가. 다읽으면 finishedEvent를 가지게 됨
       const {
         currentTarget: { result },
       } = finishedEvent;

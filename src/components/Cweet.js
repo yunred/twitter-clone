@@ -4,7 +4,6 @@ import { dbService, storageService } from 'fbase';
 const Cweet = ({ cweetObj, isOwner }) => {
   const [editing, setEditing] = useState(false); //editing 모드
   const [newCweet, setNewCweet] = useState(cweetObj.text); //기존 text, input에 입력된 text값 업데이트
-  console.log(isOwner);
   const onDeleteClick = async () => {
     const ok = window.confirm('Are you sure you want to delete this cweet?');
     if (ok) {
